@@ -506,6 +506,7 @@ html, body {
 .cal-cell.manana { background: rgba(34,197,94,.2); border-color: rgba(34,197,94,.4); color: #22c55e; }
 .cal-cell.tarde { background: rgba(245,158,11,.2); border-color: rgba(245,158,11,.4); color: #f59e0b; }
 .cal-cell.noche { background: rgba(139,92,246,.2); border-color: rgba(139,92,246,.4); color: #a78bfa; }
+.cal-cell.tarde2 { background: rgba(234,88,12,.25); border-color: rgba(234,88,12,.5); color: #fb923c; }
 .cal-cell.vacaciones { background: rgba(59,130,246,.25); border-color: rgba(59,130,246,.5); color: #60a5fa; }
 .cal-cell.festivo_manana { background: rgba(239,68,68,.2); border-color: rgba(239,68,68,.4); color: #f87171; }
 .cal-cell.festivo_tarde { background: rgba(239,68,68,.3); border-color: rgba(239,68,68,.5); color: #ef4444; }
@@ -840,11 +841,11 @@ if('serviceWorker' in navigator){
     <div class="field-row">
       <div class="field">
         <label>IRPF (%)</label>
-        <input type="number" id="irpf" value="22.86" step="0.01" inputmode="decimal">
+        <input type="number" id="irpf" value="0" step="0.01" inputmode="decimal">
       </div>
       <div class="field">
         <label>Miembros PCF</label>
-        <input type="number" id="miembros_pcf" value="4" min="0" inputmode="numeric">
+        <input type="number" id="miembros_pcf" value="0" min="0" inputmode="numeric">
       </div>
     </div>
   </div>
@@ -871,7 +872,7 @@ if('serviceWorker' in navigator){
       <div class="toggle-right">
         <input class="toggle-amount" type="number" id="euro_solidario" value="1.00" step="0.01" inputmode="decimal">
         <label class="toggle-switch">
-          <input type="checkbox" id="chk_solidario" checked>
+          <input type="checkbox" id="chk_solidario">
           <span class="toggle-slider"></span>
         </label>
       </div>
@@ -999,7 +1000,8 @@ const TURNO_CONFIG = {
 "libre": { label: "", short: "" },
 "manana": { label: "M", short: "M" },
 "tarde": { label: "T", short: "T" },
-"noche": { label: "N", short: "N" },
+  "tarde2": { label: "T2", short: "T2" },
+  "noche": { label: "N", short: "N" },
 "vacaciones": { label: "V", short: "V" },
 "festivo_manana":{ label: "FM", short: "FM" },
 "festivo_tarde": { label: "FT", short: "FT" },
@@ -1078,6 +1080,7 @@ if (t !== "libre" && t !== "vacaciones" && t !== "it") {
 diasTrabajados++; dias_turnicidad++; dias_transporte++;
 }
 if (t === "tarde" || t === "festivo_tarde") horas_nocturnas += 1;
+if (t === "tarde2") horas_nocturnas += 2;
 if (t === "noche" || t === "festivo_noche") horas_nocturnas += 7;
 if (t.startsWith("festivo")) dias_festivo++;
 }
@@ -1388,9 +1391,61 @@ bloqueBienios.style.display = parseInt(antigInput.value) <= 2004 ? "block" : "no
 antigInput.addEventListener("input", actualizarBienios);
 actualizarBienios();
 });
+/* ─── GUARDAR / CARGAR CONFIGURACIÓN ─────────────────────────── */
+const CONFIG_KEY = 'nominaConfig';
+const CONFIG_FIELDS = [
+  'categoria', 'porcentaje', 'antiguedad', 'bienios_manual',
+  'irpf', 'miembros_pcf',
+  'chk_sindical', 'cuota_sindical',
+  'chk_solidario', 'euro_solidario'
+];
+
+function guardarConfig() {
+  const config = {};
+  CONFIG_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    config[id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+
+  const btn = document.getElementById('btn-guardar-config');
+  const original = btn.textContent;
+  btn.textContent = '✅ Guardado';
+  btn.style.background = '#22c55e';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 2000);
+}
+
+function cargarConfig() {
+  const raw = localStorage.getItem(CONFIG_KEY);
+  if (!raw) return;
+  try {
+    const config = JSON.parse(raw);
+    CONFIG_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || config[id] === undefined) return;
+      if (el.type === 'checkbox') {
+        el.checked = config[id];
+      } else {
+        el.value = config[id];
+      }
+    });
+    // Actualizar visibilidad bienios
+    const antig = parseInt(document.getElementById('antiguedad').value);
+    const bloque = document.getElementById('bloque_bienios');
+    if (bloque) bloque.style.display = antig <= 2004 ? 'block' : 'none';
+  } catch(e) { console.warn('Error cargando config:', e); }
+}
+
 window.onload = function () {
 cargarMesesAnios();
 cargarCategorias();
+cargarConfig();
 cargarTurnos();
 generarCalendarioMes();
 mostrarHistorial();
