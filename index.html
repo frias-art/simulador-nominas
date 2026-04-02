@@ -1283,6 +1283,12 @@ addDed("Contingencias comunes", baseCC, 0.0485);
 addDed("Desempleo", baseCC, 0.0155);
 addDed("Formación profesional", baseCC, 0.001);
 addDed("IRPF", baseIRPF, irpf);
+
+// /402 Ingreso a cuenta IRPF — sobre especie cerveza + PCF exento
+const baseEspecie = especieCerveza + seguroPCF;
+if (irpf > 0 && baseEspecie > 0) {
+  addDed("Ingreso a cuenta IRPF (especie)", baseEspecie, irpf);
+}
 if (cuotaSindical > 0) { deducciones.push({ nombre:"Cuota Sindical UGT", base:0, porcentaje:0, importe:cuotaSindical }); totalDeducciones += cuotaSindical; }
 if (euroSolidario > 0) { deducciones.push({ nombre:"Euro solidario", base:0, porcentaje:0, importe:euroSolidario }); totalDeducciones += euroSolidario; }
 const liquido = totalDevengos - totalDeducciones;
