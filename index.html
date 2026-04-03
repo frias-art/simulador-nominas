@@ -722,6 +722,31 @@ if('serviceWorker' in navigator){
 </script>
 </head>
 <body>
+
+<!-- ═══ PANTALLA DE ACCESO ═══ -->
+<div id="login-screen">
+  <img id="login-logo" class="login-logo" alt="UGT">
+  <div class="login-title">Simulador de Nóminas</div>
+  <div class="login-sub">UGT FICA · Cervezas San Miguel · Málaga</div>
+  <div class="login-card">
+    <label class="login-label">Tu correo corporativo</label>
+    <input type="email" id="login-email" class="login-input"
+           placeholder="tucorreo@mahou-sanmiguel.com"
+           autocomplete="email" inputmode="email"
+           onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" id="login-btn" onclick="doLogin()">🔓 Acceder</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-divider"></div>
+    <div class="login-affiliate">
+      <div class="login-affiliate-text">¿Aún no eres afiliado/a?</div>
+      <a class="login-affiliate-btn"
+         href="mailto:ugt.fica.sm.malaga@gmail.com?subject=Quiero%20afiliarme%20a%20UGT&body=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20para%20afiliarme%20a%20UGT%20FICA%20Cervezas%20San%20Miguel%20M%C3%A1laga.">
+        ✊ ¡Afíliate ya!
+      </a>
+    </div>
+  </div>
+</div>
+
 <!-- VUdUwrdTaW11bGFkb3JOb21pbmFzwrdTYW5NaWd1ZWzCtzIwMjYwNDAxMjA1ODIzwrd2MS4wwrdQUk9URUdJRE8= -->
 
 <!-- SPLASH SCREEN -->
@@ -1132,7 +1157,7 @@ try {
   const resp = await fetch("https://simuladornominas.friasugt.workers.dev/calcular", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mes, anio, categoria, porcentaje, antiguedad, bienios, irpf, miembrosPCF, aplicarSindical, aplicarSolidario, cuotaSindical, euroSolidario, datosMes })
+    body: JSON.stringify({ mes, anio, categoria, porcentaje, antiguedad, bienios, irpf, miembrosPCF, aplicarSindical, aplicarSolidario, cuotaSindical, euroSolidario, datosMes, email: window._ugtEmail, token: window._ugtToken })
   });
   if (!resp.ok) throw new Error("Error servidor: " + resp.status);
   const r = await resp.json();
@@ -1269,6 +1294,103 @@ mostrarHistorial();
 <!-- VUdUwrdTaW11bGFkb3JOb21pbmFzwrdTYW5NaWd1ZWzCtzIwMjYwNDAxMjA1ODIzwrd2MS4wwrdQUk9URUdJRE8= -->
 
 <script>
+
+/* ─── ACCESO POR CORREO ─────────────────────────────── */
+(function(){
+  const WORKER = 'https://simuladornominas.friasugt.workers.dev';
+  const SESSION_KEY = 'ugt_session_v2';
+
+  function guardarSesion(email, token) {
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({email, token})); } catch(e){}
+  }
+  function cargarSesion() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e){ return null; }
+  }
+  function borrarSesion() {
+    try { localStorage.removeItem(SESSION_KEY); } catch(e){}
+  }
+
+  async function verificarSesion(sesion) {
+    try {
+      const resp = await fetch(WORKER + '/calcular', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: sesion.email, token: sesion.token,
+          mes:1, anio:2026, categoria:'OF1_OBR', porcentaje:'100',
+          antiguedad:2010, bienios:8, irpf:0, miembrosPCF:0,
+          aplicarSindical:false, aplicarSolidario:false,
+          cuotaSindical:0, euroSolidario:0,
+          datosMes:{diasTrabajados:0,horas_nocturnas:0,dias_turnicidad:0,dias_transporte:0,dias_festivo:0}
+        })
+      });
+      const r = await resp.json();
+      return !r.error || r.error !== 'No autorizado';
+    } catch(e) { return false; }
+  }
+
+  window.doLogin = async function() {
+    const email = document.getElementById('login-email').value.trim();
+    const err = document.getElementById('login-error');
+    const btn = document.getElementById('login-btn');
+
+    if (!email) { err.textContent = '❌ Introduce tu correo corporativo'; return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Verificando...';
+    err.textContent = '';
+
+    try {
+      const resp = await fetch(WORKER + '/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email})
+      });
+      const data = await resp.json();
+
+      if (data.ok) {
+        guardarSesion(data.email, data.token);
+        // Guardar email/token para los cálculos
+        window._ugtEmail = data.email;
+        window._ugtToken = data.token;
+        const screen = document.getElementById('login-screen');
+        screen.style.animation = 'loginFadeOut 0.4s ease forwards';
+        setTimeout(() => { screen.style.display = 'none'; }, 400);
+      } else {
+        err.textContent = '❌ ' + data.error;
+        btn.disabled = false;
+        btn.textContent = '🔓 Acceder';
+      }
+    } catch(e) {
+      err.textContent = '❌ Error de conexión. Comprueba tu internet.';
+      btn.disabled = false;
+      btn.textContent = '🔓 Acceder';
+    }
+  };
+
+  // Al cargar: comprobar sesión guardada
+  document.addEventListener('DOMContentLoaded', async function() {
+    // Poner logo
+    const splashImg = document.querySelector('#splash-screen img');
+    const loginLogo = document.getElementById('login-logo');
+    if (splashImg && loginLogo) loginLogo.src = splashImg.src;
+
+    const sesion = cargarSesion();
+    if (sesion) {
+      const valida = await verificarSesion(sesion);
+      if (valida) {
+        window._ugtEmail = sesion.email;
+        window._ugtToken = sesion.token;
+        const screen = document.getElementById('login-screen');
+        if (screen) screen.style.display = 'none';
+        return;
+      } else {
+        borrarSesion();
+      }
+    }
+  });
+})();
+
 (function(){
   // Bloquear clic derecho
   document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
