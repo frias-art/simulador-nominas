@@ -1086,13 +1086,26 @@ if (t.startsWith("festivo")) dias_festivo++;
 }
 return { diasTrabajados, horas_nocturnas, dias_turnicidad, dias_transporte, dias_festivo };
 }
-// Categorías disponibles (sin datos de cálculo — esos están en el servidor)
-const CATEGORIAS = ["OF1_JE_E","OF1_OBR","OF2_OBR","OF3_OBR","AUX1A_OBR","AUX2A_OBR","OF1_AD","OF2_AD","AUX_ADMIN","AUX2A_ADMIN"];
-const CATEGORIAS_BIENIOS = ["OF1_JE_E","OF1_AD","OF2_AD","OF1_OBR","OF2_OBR","OF3_OBR"];
+
+// Tablas en servidor seguro
+const CATS_DISPONIBLES = ["OF1_JE_E","OF1_OBR","OF2_OBR","OF3_OBR","AUX1A_OBR","AUX2A_OBR","OF1_AD","OF2_AD","AUX_ADMIN","AUX2A_ADMIN"];
+
+function calcularSupresionManual(categoria, bienios) {
+const tabla = tablaBienios[categoria];
+if (!tabla) return 0;
+bienios = Math.max(8, Math.min(12, bienios));
+return tabla[bienios];
+}
+function calcularPCF(miembros) {
+miembros = parseInt(miembros) || 0;
+if (miembros <= 0) return 0;
+if (miembros === 1) return 51.17;
+return 51.17 + (miembros - 1) * 65.09;
+}
 function cargarCategorias() {
 const sel = document.getElementById("categoria");
 sel.innerHTML = "";
-CATEGORIAS.forEach(cat => {
+CATS_DISPONIBLES.forEach(cat => {
 const o = document.createElement("option");
 o.value = cat; o.textContent = cat;
 sel.appendChild(o);
@@ -1113,33 +1126,26 @@ const euroSolidario = aplicarSolidario ? parseFloat(document.getElementById("eur
 const bienios = parseInt(document.getElementById("bienios_manual").value) || 8;
 const datosMes = obtenerDatosMes(mes, anio);
 
-// Mostrar loading
 document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-dim)"><div style="font-size:32px;margin-bottom:12px">⏳</div><div>Calculando nómina...</div></div>`;
 
 try {
   const resp = await fetch("https://simuladornominas.friasugt.workers.dev/calcular", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      mes, anio, categoria, porcentaje, antiguedad, bienios,
-      irpf, miembrosPCF, aplicarSindical, aplicarSolidario,
-      cuotaSindical, euroSolidario, datosMes
-    })
+    body: JSON.stringify({ mes, anio, categoria, porcentaje, antiguedad, bienios, irpf, miembrosPCF, aplicarSindical, aplicarSolidario, cuotaSindical, euroSolidario, datosMes })
   });
-
-  if (!resp.ok) throw new Error("Error del servidor: " + resp.status);
+  if (!resp.ok) throw new Error("Error servidor: " + resp.status);
   const r = await resp.json();
   if (r.error) throw new Error(r.error);
 
-  const { devengos, totalDevengos, deducciones, totalDeducciones, liquido,
-          pagaExtraBase, baseCC, baseIRPF, especieCerveza, planPensiones, seguroPCF } = r;
+  const { devengos, totalDevengos, deducciones, totalDeducciones, liquido, pagaExtraBase, baseCC, baseIRPF, especieCerveza, planPensiones, seguroPCF } = r;
 
   let html2 = `<div class="nomina-output">`;
   html2 += `<div class="liquido-card"><div class="liquido-label">Líquido a percibir</div><div class="liquido-amount"><span>€ </span>${liquido.toFixed(2)}</div></div>`;
   html2 += `<div class="card"><div class="card-title">Devengos</div>`;
   devengos.forEach(d => {
     const neg = d.importe < 0;
-    html2 += `<div class="concepto-row"><div><div class="concepto-name">${d.nombre}</div>${d.precio ? `<div class="concepto-detail">${d.precio.toFixed(2)} × ${d.cantidad}</div>` : ''}</div><div class="concepto-importe ${neg ? 'negative' : ''}">${neg ? '-' : ''}${Math.abs(d.importe).toFixed(2)} €</div></div>`;
+    html2 += `<div class="concepto-row"><div><div class="concepto-name">${d.nombre}</div>${d.precio ? `<div class="concepto-detail">${d.precio.toFixed(2)} × ${d.cantidad}</div>` : ''}</div><div class="concepto-importe ${neg?'negative':''}">${neg?'-':''}${Math.abs(d.importe).toFixed(2)} €</div></div>`;
   });
   html2 += `<div class="totals-block"><div class="total-row" style="font-weight:600"><span class="total-label">Total devengos</span><span class="total-value">${totalDevengos.toFixed(2)} €</span></div></div></div>`;
   html2 += `<div class="card"><div class="card-title">Deducciones</div>`;
@@ -1150,12 +1156,10 @@ try {
   html2 += `<div class="card"><div class="card-title">P.P. Extra y otros conceptos</div><div class="info-row"><span class="info-label">Paga extra prorrateada</span><span class="info-value">${pagaExtraBase.toFixed(2)} €</span></div><div class="info-row"><span class="info-label">Retribución en especie: Cerveza</span><span class="info-value">${especieCerveza.toFixed(2)} €</span></div><div class="info-row"><span class="info-label">Plan de pensiones</span><span class="info-value">${planPensiones.toFixed(2)} €</span></div>${seguroPCF > 0 ? `<div class="info-row"><span class="info-label">Seguro PCF (exento)</span><span class="info-value">${seguroPCF.toFixed(2)} €</span></div>` : ''}</div>`;
   html2 += `<div class="card"><div class="card-title">Bases de cotización</div><div class="info-row"><span class="info-label">Base CC</span><span class="info-value">${baseCC.toFixed(2)} €</span></div><div class="info-row"><span class="info-label">Base IRPF</span><span class="info-value">${baseIRPF.toFixed(2)} €</span></div></div>`;
   html2 += `</div>`;
-
   document.getElementById("nomina-output").innerHTML = html2;
   guardarNominaEnHistorial({ fecha: new Date().toLocaleDateString(), categoria, porcentaje, liquido });
   mostrarHistorial();
   setTimeout(() => document.getElementById("nomina-output").scrollIntoView({ behavior:'smooth' }), 100);
-
 } catch(err) {
   document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--red)"><div style="font-size:32px;margin-bottom:12px">❌</div><div>${err.message}</div><div style="font-size:12px;color:var(--text-dim);margin-top:8px">Comprueba tu conexión e inténtalo de nuevo</div></div>`;
 }
