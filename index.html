@@ -1115,7 +1115,7 @@ const datosMes = obtenerDatosMes(mes, anio);
 document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-dim)"><div style="font-size:32px;margin-bottom:12px">⏳</div><div>Calculando nómina...</div></div>`;
 
 try {
-  const resp = await fetch("https://friasugt.workers.dev/calcular", {
+  const resp = await fetch("https://simuladornominas.friasugt.workers.dev/calcular", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
