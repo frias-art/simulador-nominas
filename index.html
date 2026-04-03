@@ -1086,11 +1086,13 @@ if (t.startsWith("festivo")) dias_festivo++;
 }
 return { diasTrabajados, horas_nocturnas, dias_turnicidad, dias_transporte, dias_festivo };
 }
-// Cálculo realizado de forma segura en el servidor
+// Categorías disponibles (sin datos de cálculo — esos están en el servidor)
+const CATEGORIAS = ["OF1_JE_E","OF1_OBR","OF2_OBR","OF3_OBR","AUX1A_OBR","AUX2A_OBR","OF1_AD","OF2_AD","AUX_ADMIN","AUX2A_ADMIN"];
+const CATEGORIAS_BIENIOS = ["OF1_JE_E","OF1_AD","OF2_AD","OF1_OBR","OF2_OBR","OF3_OBR"];
 function cargarCategorias() {
 const sel = document.getElementById("categoria");
 sel.innerHTML = "";
-Object.keys(tablasSalariales).forEach(cat => {
+CATEGORIAS.forEach(cat => {
 const o = document.createElement("option");
 o.value = cat; o.textContent = cat;
 sel.appendChild(o);
