@@ -1086,98 +1086,7 @@ if (t.startsWith("festivo")) dias_festivo++;
 }
 return { diasTrabajados, horas_nocturnas, dias_turnicidad, dias_transporte, dias_festivo };
 }
-const tablasSalariales = {
-"OF1_JE_E": { tipo:"D",
-"100":{ salario_dia:54.70, plus_dia:44.45, turnicidad:7.31, nocturnidad:4.41 },
-"95": { salario_dia:51.9640, plus_dia:42.2245, turnicidad:6.9461, nocturnidad:4.1934 },
-"87": { salario_dia:47.5880, plus_dia:38.6687, turnicidad:6.3612, nocturnidad:3.8403 },
-"82": { salario_dia:44.8531, plus_dia:36.4464, turnicidad:5.9956, nocturnidad:3.6196 },
-"75": { salario_dia:41.0242, plus_dia:33.3351, turnicidad:5.4838, nocturnidad:3.3106 }
-},
-"OF1_OBR": { tipo:"D",
-"100":{ salario_dia:54.70, plus_dia:36.78, turnicidad:7.31, nocturnidad:4.41 },
-"95": { salario_dia:51.9640, plus_dia:34.9420, turnicidad:6.9461, nocturnidad:4.1934 },
-"87": { salario_dia:47.5880, plus_dia:31.9995, turnicidad:6.3612, nocturnidad:3.8403 },
-"82": { salario_dia:44.8531, plus_dia:30.1605, turnicidad:5.9956, nocturnidad:3.6196 },
-"75": { salario_dia:41.0242, plus_dia:27.5858, turnicidad:5.4838, nocturnidad:3.3106 }
-},
-"OF2_OBR": { tipo:"D",
-"100":{ salario_dia:51.80, plus_dia:35.57, turnicidad:7.31, nocturnidad:4.41 },
-"95": { salario_dia:49.2073, plus_dia:33.7877, turnicidad:6.9461, nocturnidad:4.1934 },
-"87": { salario_dia:45.0635, plus_dia:30.9424, turnicidad:6.3612, nocturnidad:3.8403 },
-"82": { salario_dia:42.4737, plus_dia:29.1641, turnicidad:5.9956, nocturnidad:3.6196 },
-"75": { salario_dia:38.8479, plus_dia:26.6745, turnicidad:5.4838, nocturnidad:3.3106 }
-},
-"OF3_OBR": { tipo:"D",
-"100":{ salario_dia:49.46, plus_dia:35.44, turnicidad:7.31, nocturnidad:4.41 },
-"95": { salario_dia:46.9870, plus_dia:33.6696, turnicidad:6.9461, nocturnidad:4.1934 },
-"87": { salario_dia:43.0302, plus_dia:30.8343, turnicidad:6.3612, nocturnidad:3.8403 },
-"82": { salario_dia:40.5572, plus_dia:29.0622, turnicidad:5.9956, nocturnidad:3.6196 },
-"75": { salario_dia:37.0950, plus_dia:26.5813, turnicidad:5.4838, nocturnidad:3.3106 }
-},
-"AUX1A_OBR": { tipo:"D",
-"100":{ salario_dia:47.88, plus_dia:35.26, turnicidad:7.31, nocturnidad:4.41 },
-"95": { salario_dia:45.4893, plus_dia:33.4994, turnicidad:6.9461, nocturnidad:4.1934 },
-"87": { salario_dia:41.6586, plus_dia:30.6784, turnicidad:6.3612, nocturnidad:3.8403 },
-"82": { salario_dia:39.2645, plus_dia:28.9152, turnicidad:5.9956, nocturnidad:3.6196 },
-"75": { salario_dia:35.9126, plus_dia:26.4469, turnicidad:5.4838, nocturnidad:3.3106 }
-},
-"AUX2A_OBR": { tipo:"D",
-"100":{ salario_dia:46.66, plus_dia:34.43, turnicidad:7.3117, nocturnidad:4.4141 },
-"95": { salario_dia:44.3306, plus_dia:32.7091, turnicidad:6.9461, nocturnidad:4.1934 },
-"87": { salario_dia:40.5975, plus_dia:29.9547, turnicidad:6.3612, nocturnidad:3.8403 },
-"82": { salario_dia:38.2643, plus_dia:28.2331, turnicidad:5.9956, nocturnidad:3.6196 },
-"75": { salario_dia:34.9979, plus_dia:25.8230, turnicidad:5.4838, nocturnidad:3.3106 }
-},
-"OF1_AD": { tipo:"M",
-"100":{ salario_mes:1657.72, plus_mes:1441.54 },
-"95": { salario_mes:1574.83, plus_mes:1369.46 },
-"87": { salario_mes:1442.21, plus_mes:1254.14 },
-"82": { salario_mes:1359.33, plus_mes:1182.06 },
-"75": { salario_mes:1243.29, plus_mes:1081.15 }
-},
-"OF2_AD": { tipo:"M",
-"100":{ salario_mes:1570.77, plus_mes:1134.41 },
-"95": { salario_mes:1492.23, plus_mes:1077.69 },
-"87": { salario_mes:1366.57, plus_mes:986.94 },
-"82": { salario_mes:1288.03, plus_mes:930.21 },
-"75": { salario_mes:1178.08, plus_mes:850.81 }
-},
-"AUX_ADMIN": { tipo:"M",
-"100":{ salario_mes:1460.22, plus_mes:1060.14 },
-"95": { salario_mes:1387.21, plus_mes:1007.13 },
-"87": { salario_mes:1270.40, plus_mes:922.32 },
-"82": { salario_mes:1197.38, plus_mes:869.31 },
-"75": { salario_mes:1095.17, plus_mes:795.10 }
-},
-"AUX2A_ADMIN": { tipo:"M",
-"100":{ salario_mes:1423.01, plus_mes:1035.17 },
-"95": { salario_mes:1351.86, plus_mes:983.41 },
-"87": { salario_mes:1238.02, plus_mes:900.59 },
-"82": { salario_mes:1166.87, plus_mes:848.84 },
-"75": { salario_mes:1067.26, plus_mes:776.37 }
-}
-};
-const tablaBienios = {
-"OF1_JE_E":[0,1.9793,3.7809,5.9382,7.9177,9.8970,11.8764,13.8567,15.8362,17.8155,19.7950,21.7754,23.7558],
-"OF1_AD":[0,57.2891,109.3666,171.8573,229.1515,286.4367,343.7230,401.0092,458.2953,515.59,572.88,630.04,687.32],
-"OF2_AD":[0,54.6808,103.7925,164.0424,218.7322,273.4312,328.0867,382.7886,437.4511,492.14,546.82,601.50,656.19],
-"OF1_OBR":[0,1.8158,3.5456,5.4473,7.2631,9.0799,10.8947,12.7105,14.5329,16.34,18.15,19.97,21.7892],
-"OF2_OBR":[0,1.7729,3.4538,5.3186,7.0914,8.8642,10.6371,12.4100,14.1826,15.95,17.72,19.50,21.27],
-"OF3_OBR":[0,1.7260,3.4235,5.1808,6.9087,8.6356,10.3635,12.0904,13.8183,15.5458,17.2731,19.0002,20.7274]
-};
-function calcularSupresionManual(categoria, bienios) {
-const tabla = tablaBienios[categoria];
-if (!tabla) return 0;
-bienios = Math.max(8, Math.min(12, bienios));
-return tabla[bienios];
-}
-function calcularPCF(miembros) {
-miembros = parseInt(miembros) || 0;
-if (miembros <= 0) return 0;
-if (miembros === 1) return 51.17;
-return 51.17 + (miembros - 1) * 65.09;
-}
+// Cálculo realizado de forma segura en el servidor
 function cargarCategorias() {
 const sel = document.getElementById("categoria");
 sel.innerHTML = "";
@@ -1187,174 +1096,67 @@ o.value = cat; o.textContent = cat;
 sel.appendChild(o);
 });
 }
-function generarNomina() {
+async function generarNomina() {
 const mes = parseInt(document.getElementById("mes_nomina").value);
 const anio = parseInt(document.getElementById("anio_nomina").value);
 const categoria = document.getElementById("categoria").value;
 const porcentaje = document.getElementById("porcentaje").value;
 const antiguedad = parseInt(document.getElementById("antiguedad").value);
-const irpf = parseFloat(document.getElementById("irpf").value) / 100;
+const irpf = parseFloat(document.getElementById("irpf").value);
 const miembrosPCF = parseInt(document.getElementById("miembros_pcf").value) || 0;
 const aplicarSindical = document.getElementById("chk_sindical").checked;
 const aplicarSolidario = document.getElementById("chk_solidario").checked;
 const cuotaSindical = aplicarSindical ? parseFloat(document.getElementById("cuota_sindical").value) || 0 : 0;
 const euroSolidario = aplicarSolidario ? parseFloat(document.getElementById("euro_solidario").value) || 0 : 0;
-const dias = diasDelMes(mes, anio);
+const bienios = parseInt(document.getElementById("bienios_manual").value) || 8;
 const datosMes = obtenerDatosMes(mes, anio);
-const tabla = tablasSalariales[categoria][porcentaje];
-const tipo = tablasSalariales[categoria].tipo;
-let devengos = [], totalDevengos = 0, totalDeducciones = 0;
-const salarioBase = tipo === "D" ? tabla.salario_dia * dias : tabla.salario_mes;
-devengos.push({ nombre:"Salario base", importe:salarioBase });
-totalDevengos += salarioBase;
-const plusConvenio = tipo === "D" ? tabla.plus_dia * dias : tabla.plus_mes;
-devengos.push({ nombre:"Plus de convenio", importe:plusConvenio });
-totalDevengos += plusConvenio;
-if (categoria === "OF1_JE_E") {
-const plusJefeBase = 667.62;
-const plusJefe = plusJefeBase * (parseFloat(porcentaje) / 100);
-devengos.push({ nombre:"Plus jefe de equipo", importe:plusJefe });
-totalDevengos += plusJefe;
-}
-let importeSupresion = 0;
-if (antiguedad <= 2004) {
-const bienios = parseInt(document.getElementById("bienios_manual").value);
-const valorBienio = calcularSupresionManual(categoria, bienios);
-importeSupresion = valorBienio * dias;
-devengos.push({ nombre:`Supresión antigüedad (${bienios} bienios)`, importe:importeSupresion });
-totalDevengos += importeSupresion;
-}
-if (antiguedad <= 2012) {
-devengos.push({ nombre:"Plus fijo compensatorio", importe:751.60 });
-totalDevengos += 751.60;
-}
-if (datosMes.dias_turnicidad > 0 && tabla.turnicidad) {
-const importe = tabla.turnicidad * datosMes.dias_turnicidad;
-devengos.push({ nombre:"Plus turnicidad", precio:tabla.turnicidad, cantidad:datosMes.dias_turnicidad, importe });
-totalDevengos += importe;
-}
-if (datosMes.horas_nocturnas > 0 && tabla.nocturnidad) {
-const importe = tabla.nocturnidad * datosMes.horas_nocturnas;
-devengos.push({ nombre:"Plus nocturnidad", precio:tabla.nocturnidad, cantidad:datosMes.horas_nocturnas, importe });
-totalDevengos += importe;
-}
-if (datosMes.dias_transporte > 0) {
-const importe = 8.00 * datosMes.dias_transporte;
-devengos.push({ nombre:"Plus transporte", precio:8.00, cantidad:datosMes.dias_transporte, importe });
-totalDevengos += importe;
-}
-if (datosMes.dias_festivo > 0) {
-const precio = 190.79 * (parseFloat(porcentaje) / 100);
-const importe = precio * datosMes.dias_festivo;
-devengos.push({ nombre:"Plus festivo", precio, cantidad:datosMes.dias_festivo, importe });
-totalDevengos += importe;
-}
-const pcf = calcularPCF(miembrosPCF);
-if (pcf > 0) {
-devengos.push({ nombre:"PCF Seguro Salud", importe:-pcf });
-totalDevengos -= pcf;
-}
-const especieCerveza = 15.48;
-const planPensiones = 200.59;
-let seguroPCF = 0;
-if (miembrosPCF === 4) seguroPCF = 79.76;
-else if (miembrosPCF === 3) seguroPCF = 56.34;
-else if (miembrosPCF === 2) seguroPCF = 37.56;
-else if (miembrosPCF === 1) seguroPCF = 18.78;
-const totalOtrosConceptos = especieCerveza + planPensiones + seguroPCF;
-const DIVISOR_PAGAS = 3.085;
-const pcfReal = (antiguedad <= 2012) ? 751.60 : 0;
-let pagaExtraBase = tipo === "D"
-? ((tabla.salario_dia + tabla.plus_dia) * dias + pcfReal + importeSupresion) / DIVISOR_PAGAS
-: (tabla.salario_mes + tabla.plus_mes + pcfReal + importeSupresion) / DIVISOR_PAGAS;
-const TOPE_MAX_MENSUAL = 5101.20;
-const TOPE_MAX_DIARIO = 170.04;
-let baseCC = totalDevengos + pagaExtraBase + totalOtrosConceptos;
-const baseIRPF = totalDevengos;
-if (tipo === "M") { if (baseCC > TOPE_MAX_MENSUAL) baseCC = TOPE_MAX_MENSUAL; }
-else { const topeMes = TOPE_MAX_DIARIO * dias; if (baseCC > topeMes) baseCC = topeMes; }
-let deducciones = [];
-function addDed(nombre, base, pct) {
-const importe = base * pct;
-deducciones.push({ nombre, base, porcentaje:pct*100, importe });
-totalDeducciones += importe;
-}
-addDed("Contingencias comunes", baseCC, 0.0485);
-addDed("Desempleo", baseCC, 0.0155);
-addDed("Formación profesional", baseCC, 0.001);
-addDed("IRPF", baseIRPF, irpf);
 
-// /402 Ingreso a cuenta IRPF — sobre especie cerveza + PCF exento
-const baseEspecie = especieCerveza + seguroPCF;
-if (irpf > 0 && baseEspecie > 0) {
-  addDed("Ingreso a cuenta IRPF (especie)", baseEspecie, irpf);
+// Mostrar loading
+document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-dim)"><div style="font-size:32px;margin-bottom:12px">⏳</div><div>Calculando nómina...</div></div>`;
+
+try {
+  const resp = await fetch("https://friasugt.workers.dev/calcular", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      mes, anio, categoria, porcentaje, antiguedad, bienios,
+      irpf, miembrosPCF, aplicarSindical, aplicarSolidario,
+      cuotaSindical, euroSolidario, datosMes
+    })
+  });
+
+  if (!resp.ok) throw new Error("Error del servidor: " + resp.status);
+  const r = await resp.json();
+  if (r.error) throw new Error(r.error);
+
+  const { devengos, totalDevengos, deducciones, totalDeducciones, liquido,
+          pagaExtraBase, baseCC, baseIRPF, especieCerveza, planPensiones, seguroPCF } = r;
+
+  let html2 = `<div class="nomina-output">`;
+  html2 += `<div class="liquido-card"><div class="liquido-label">Líquido a percibir</div><div class="liquido-amount"><span>€ </span>${liquido.toFixed(2)}</div></div>`;
+  html2 += `<div class="card"><div class="card-title">Devengos</div>`;
+  devengos.forEach(d => {
+    const neg = d.importe < 0;
+    html2 += `<div class="concepto-row"><div><div class="concepto-name">${d.nombre}</div>${d.precio ? `<div class="concepto-detail">${d.precio.toFixed(2)} × ${d.cantidad}</div>` : ''}</div><div class="concepto-importe ${neg ? 'negative' : ''}">${neg ? '-' : ''}${Math.abs(d.importe).toFixed(2)} €</div></div>`;
+  });
+  html2 += `<div class="totals-block"><div class="total-row" style="font-weight:600"><span class="total-label">Total devengos</span><span class="total-value">${totalDevengos.toFixed(2)} €</span></div></div></div>`;
+  html2 += `<div class="card"><div class="card-title">Deducciones</div>`;
+  deducciones.forEach(d => {
+    html2 += `<div class="concepto-row"><div><div class="concepto-name">${d.nombre}</div>${d.base > 0 ? `<div class="concepto-detail">Base: ${d.base.toFixed(2)} · ${d.porcentaje.toFixed(2)}%</div>` : ''}</div><div class="concepto-importe negative">-${d.importe.toFixed(2)} €</div></div>`;
+  });
+  html2 += `<div class="totals-block"><div class="total-row" style="font-weight:600"><span class="total-label">Total deducciones</span><span class="total-value" style="color:var(--red)">-${totalDeducciones.toFixed(2)} €</span></div><div class="total-row main"><span class="total-label">Líquido</span><span class="total-value" style="color:var(--green)">${liquido.toFixed(2)} €</span></div></div></div>`;
+  html2 += `<div class="card"><div class="card-title">P.P. Extra y otros conceptos</div><div class="info-row"><span class="info-label">Paga extra prorrateada</span><span class="info-value">${pagaExtraBase.toFixed(2)} €</span></div><div class="info-row"><span class="info-label">Retribución en especie: Cerveza</span><span class="info-value">${especieCerveza.toFixed(2)} €</span></div><div class="info-row"><span class="info-label">Plan de pensiones</span><span class="info-value">${planPensiones.toFixed(2)} €</span></div>${seguroPCF > 0 ? `<div class="info-row"><span class="info-label">Seguro PCF (exento)</span><span class="info-value">${seguroPCF.toFixed(2)} €</span></div>` : ''}</div>`;
+  html2 += `<div class="card"><div class="card-title">Bases de cotización</div><div class="info-row"><span class="info-label">Base CC</span><span class="info-value">${baseCC.toFixed(2)} €</span></div><div class="info-row"><span class="info-label">Base IRPF</span><span class="info-value">${baseIRPF.toFixed(2)} €</span></div></div>`;
+  html2 += `</div>`;
+
+  document.getElementById("nomina-output").innerHTML = html2;
+  guardarNominaEnHistorial({ fecha: new Date().toLocaleDateString(), categoria, porcentaje, liquido });
+  mostrarHistorial();
+  setTimeout(() => document.getElementById("nomina-output").scrollIntoView({ behavior:'smooth' }), 100);
+
+} catch(err) {
+  document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--red)"><div style="font-size:32px;margin-bottom:12px">❌</div><div>${err.message}</div><div style="font-size:12px;color:var(--text-dim);margin-top:8px">Comprueba tu conexión e inténtalo de nuevo</div></div>`;
 }
-if (cuotaSindical > 0) { deducciones.push({ nombre:"Cuota Sindical UGT", base:0, porcentaje:0, importe:cuotaSindical }); totalDeducciones += cuotaSindical; }
-if (euroSolidario > 0) { deducciones.push({ nombre:"Euro solidario", base:0, porcentaje:0, importe:euroSolidario }); totalDeducciones += euroSolidario; }
-const liquido = totalDevengos - totalDeducciones;
-const mesNombre = MESES[mes - 1];
-let html = `<div class="nomina-output">`;
-html += `
-<div class="liquido-card">
-<div class="liquido-label">Líquido a percibir</div>
-<div class="liquido-amount"><span>€ </span>${liquido.toFixed(2)}</div>
-</div>`;
-html += `<div class="card">
-<div class="card-title">Devengos</div>`;
-devengos.forEach(d => {
-const neg = d.importe < 0;
-html += `<div class="concepto-row">
-<div>
-<div class="concepto-name">${d.nombre}</div>
-${d.precio ? `<div class="concepto-detail">${d.precio.toFixed(2)} × ${d.cantidad}</div>` : ''}
-</div>
-<div class="concepto-importe ${neg ? 'negative' : ''}">${neg ? '-' : ''}${Math.abs(d.importe).toFixed(2)} €</div>
-</div>`;
-});
-html += `<div class="totals-block">
-<div class="total-row" style="font-weight:600">
-<span class="total-label">Total devengos</span>
-<span class="total-value">${totalDevengos.toFixed(2)} €</span>
-</div>
-</div></div>`;
-html += `<div class="card">
-<div class="card-title">Deducciones</div>`;
-deducciones.forEach(d => {
-html += `<div class="concepto-row">
-<div>
-<div class="concepto-name">${d.nombre}</div>
-${d.base > 0 ? `<div class="concepto-detail">Base: ${d.base.toFixed(2)} · ${d.porcentaje.toFixed(2)}%</div>` : ''}
-</div>
-<div class="concepto-importe negative">-${d.importe.toFixed(2)} €</div>
-</div>`;
-});
-html += `<div class="totals-block">
-<div class="total-row" style="font-weight:600">
-<span class="total-label">Total deducciones</span>
-<span class="total-value" style="color:var(--red)">-${totalDeducciones.toFixed(2)} €</span>
-</div>
-<div class="total-row main">
-<span class="total-label">Líquido</span>
-<span class="total-value" style="color:var(--green)">${liquido.toFixed(2)} €</span>
-</div>
-</div></div>`;
-html += `<div class="card">
-<div class="card-title">P.P. Extra y otros conceptos</div>
-<div class="info-row"><span class="info-label">Paga extra prorrateada</span><span class="info-value">${pagaExtraBase.toFixed(2)} €</span></div>
-<div class="info-row"><span class="info-label">Retribución en especie: Cerveza</span><span class="info-value">${especieCerveza.toFixed(2)} €</span></div>
-<div class="info-row"><span class="info-label">Plan de pensiones</span><span class="info-value">${planPensiones.toFixed(2)} €</span></div>
-${seguroPCF > 0 ? `<div class="info-row"><span class="info-label">Seguro PCF (exento)</span><span class="info-value">${seguroPCF.toFixed(2)} €</span></div>` : ''}
-</div>`;
-html += `<div class="card">
-<div class="card-title">Bases de cotización</div>
-<div class="info-row"><span class="info-label">Base CC</span><span class="info-value">${baseCC.toFixed(2)} €</span></div>
-<div class="info-row"><span class="info-label">Base IRPF</span><span class="info-value">${baseIRPF.toFixed(2)} €</span></div>
-</div>`;
-html += `</div>`;
-document.getElementById("nomina-output").innerHTML = html;
-guardarNominaEnHistorial({ fecha: new Date().toLocaleDateString(), categoria, porcentaje, liquido });
-mostrarHistorial();
-setTimeout(() => document.getElementById("nomina-output").scrollIntoView({ behavior:'smooth' }), 100);
 }
 function guardarNominaEnHistorial(nomina) {
 const lista = JSON.parse(localStorage.getItem("historialNominas") || "[]");
