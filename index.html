@@ -1478,7 +1478,7 @@ mostrarHistorial();
     if (splash && logo) logo.src = splash.src;
 
     // Bloquear scroll de la app mientras está el login
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('login-active');
 
     // Comprobar sesión guardada
     var sesion = cargar();
