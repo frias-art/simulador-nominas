@@ -723,83 +723,69 @@ if('serviceWorker' in navigator){
 </head>
 <body>
 
-<!-- ═══ PANTALLA DE ACCESO ═══ -->
+<!-- ════════════════════════════════════
+     PANTALLA DE LOGIN — cubre toda la app
+════════════════════════════════════ -->
 <div id="login-screen">
 
-  <!-- Cabecera con logo -->
-  <div class="login-header">
-    <img id="login-logo" class="login-logo" alt="UGT Simulador de Nóminas">
-    <div class="login-title">
+  <div class="ls-header">
+    <img id="ls-logo" class="ls-logo" alt="Simulador Nóminas UGT">
+    <div class="ls-title">
       Simulador de Nóminas
       <span>UGT FICA</span>
     </div>
-    <div class="login-sub">Cervezas San Miguel · Málaga</div>
+    <div class="ls-sub">Cervezas San Miguel · Málaga</div>
   </div>
 
-  <!-- Formulario -->
-  <div class="login-body">
+  <div class="ls-body">
 
-    <!-- PASO 1: Correo -->
-    <div id="login-paso1" class="login-card">
-      <label class="login-label">Correo válido</label>
-      <input type="email" id="login-email" class="login-input"
+    <!-- PASO 1: Introducir correo -->
+    <div id="ls-paso1" class="ls-card">
+      <label class="ls-label">Correo válido</label>
+      <input type="email" id="ls-email" class="ls-input"
              placeholder="tucorreo@mahou-sanmiguel.com"
              autocomplete="email" inputmode="email"
-             onkeydown="if(event.key==='Enter')doEnviarCodigo()">
-      <button class="login-btn" id="login-btn" onclick="doEnviarCodigo()">
+             onkeydown="if(event.key==='Enter')lsEnviarCodigo()">
+      <button class="ls-btn" id="ls-btn1" onclick="lsEnviarCodigo()">
         Enviar código
       </button>
-      <div class="login-error" id="login-error"></div>
-      <p style="font-size:12px;color:var(--text-dim);margin:12px 0 0;text-align:center;line-height:1.5;">
-        Te enviaremos un código de 6 dígitos a tu correo para verificar tu identidad
-      </p>
+      <div class="ls-error" id="ls-error"></div>
+      <p class="ls-hint">Te enviaremos un código de 6 dígitos para verificar tu identidad</p>
     </div>
 
-    <!-- PASO 2: Código -->
-    <div id="login-paso2" class="login-card" style="display:none;">
-      <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:32px;margin-bottom:8px;">📬</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);">Código enviado</div>
-        <div style="font-size:12px;color:var(--text-dim);margin-top:4px;" id="login-email-display"></div>
+    <!-- PASO 2: Introducir código -->
+    <div id="ls-paso2" class="ls-card" style="display:none;">
+      <div class="ls-paso2-icon">
+        <div>📬</div>
+        <div class="ls-paso2-titulo">Código enviado</div>
+        <div class="ls-paso2-email" id="ls-email-display"></div>
       </div>
-      <label class="login-label">Código de verificación</label>
-      <input type="number" id="login-codigo" class="login-input"
+      <label class="ls-label">Código de verificación</label>
+      <input type="tel" id="ls-codigo" class="ls-input"
              placeholder="123456" maxlength="6" inputmode="numeric"
-             style="text-align:center;font-size:28px;font-family:monospace;letter-spacing:6px;"
-             onkeydown="if(event.key==='Enter')doVerificarCodigo()">
-      <button class="login-btn" id="login-btn2" onclick="doVerificarCodigo()" style="margin-top:14px;">
+             style="text-align:center;font-size:32px;font-family:monospace;letter-spacing:8px;padding:14px 8px;"
+             onkeydown="if(event.key==='Enter')lsVerificarCodigo()">
+      <button class="ls-btn" id="ls-btn2" onclick="lsVerificarCodigo()">
         Verificar y entrar
       </button>
-      <button onclick="doVolver()"
-              style="width:100%;margin-top:10px;padding:12px;background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-dim);font-size:14px;cursor:pointer;">
-        ← Cambiar correo
-      </button>
-      <div class="login-error" id="login-error"></div>
+      <button class="ls-btn-back" onclick="lsVolver()">← Cambiar correo</button>
+      <div class="ls-error" id="ls-error2"></div>
     </div>
 
-    <div class="login-divider">
-      <span class="login-divider-text">¿No eres afiliado/a?</span>
-    </div>
+    <div class="ls-divider"><span>¿No eres afiliado/a?</span></div>
 
-    <div class="login-affiliate">
-      <div class="login-affiliate-text">
-        Solicita tu acceso contactando con tu delegado/a de UGT
-      </div>
-      <a class="login-affiliate-btn"
-         href="mailto:ssugtsmm@gmail.com?subject=Quiero%20afiliarme%20a%20UGT&body=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20para%20afiliarme%20a%20UGT%20FICA%20Cervezas%20San%20Miguel%20M%C3%A1laga."
-         style="display:block;width:100%;padding:18px 16px;background:linear-gradient(135deg,#8B0000,#b30000);border:none;border-radius:10px;color:#FFD700;font-size:17px;font-weight:700;text-decoration:none;cursor:pointer;box-sizing:border-box;box-shadow:0 4px 18px rgba(139,0,0,.45);line-height:1.5;text-align:center;">
-        ✊ ¡Afíliate YA a UGT!<br>
-        <span style="font-size:13px;font-weight:500;color:rgba(255,255,255,.85);">Defendemos tus derechos. Juntos somos más.</span>
-      </a>
-    </div>
+    <a class="ls-afiliate"
+       href="mailto:ssugtsmm@gmail.com?subject=Quiero%20afiliarme%20a%20UGT&body=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20para%20afiliarme%20a%20UGT%20FICA%20Cervezas%20San%20Miguel%20M%C3%A1laga.">
+      ✊ ¡Afíliate YA a UGT!
+      <span>Defendemos tus derechos. Juntos somos más.</span>
+    </a>
+
   </div>
 
-  <div class="login-footer">
-    Herramienta sindical gratuita · UGT · 2026
-  </div>
+  <div class="ls-footer">Herramienta sindical gratuita · UGT · 2026</div>
 
 </div>
-
+<!-- ════ FIN LOGIN SCREEN ════ -->
 <!-- VUdUwrdTaW11bGFkb3JOb21pbmFzwrdTYW5NaWd1ZWzCtzIwMjYwNDAxMjA1ODIzwrd2MS4wwrdQUk9URUdJRE8= -->
 
 <!-- SPLASH SCREEN -->
@@ -1165,7 +1151,6 @@ if (t.startsWith("festivo")) dias_festivo++;
 return { diasTrabajados, horas_nocturnas, dias_turnicidad, dias_transporte, dias_festivo };
 }
 
-// Tablas en servidor seguro
 const CATS_DISPONIBLES = ["OF1_JE_E","OF1_OBR","OF2_OBR","OF3_OBR","AUX1A_OBR","AUX2A_OBR","OF1_AD","OF2_AD","AUX_ADMIN","AUX2A_ADMIN"];
 
 function calcularSupresionManual(categoria, bienios) {
@@ -1217,7 +1202,6 @@ try {
   if (r.error) throw new Error(r.error);
 
   const { devengos, totalDevengos, deducciones, totalDeducciones, liquido, pagaExtraBase, baseCC, baseIRPF, especieCerveza, planPensiones, seguroPCF } = r;
-
   let html2 = `<div class="nomina-output">`;
   html2 += `<div class="liquido-card"><div class="liquido-label">Líquido a percibir</div><div class="liquido-amount"><span>€ </span>${liquido.toFixed(2)}</div></div>`;
   html2 += `<div class="card"><div class="card-title">Devengos</div>`;
@@ -1239,7 +1223,7 @@ try {
   mostrarHistorial();
   setTimeout(() => document.getElementById("nomina-output").scrollIntoView({ behavior:'smooth' }), 100);
 } catch(err) {
-  document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--red)"><div style="font-size:32px;margin-bottom:12px">❌</div><div>${err.message}</div><div style="font-size:12px;color:var(--text-dim);margin-top:8px">Comprueba tu conexión e inténtalo de nuevo</div></div>`;
+  document.getElementById("nomina-output").innerHTML = `<div style="text-align:center;padding:40px;color:var(--red)"><div style="font-size:32px;margin-bottom:12px">❌</div><div>${err.message}</div></div>`;
 }
 }
 function guardarNominaEnHistorial(nomina) {
@@ -1347,25 +1331,160 @@ mostrarHistorial();
 <!-- VUdUwrdTaW11bGFkb3JOb21pbmFzwrdTYW5NaWd1ZWzCtzIwMjYwNDAxMjA1ODIzwrd2MS4wwrdQUk9URUdJRE8= -->
 
 <script>
-
-/* ─── ACCESO POR CORREO + CÓDIGO ───────────────────── */
 (function(){
-  const WORKER = 'https://simuladornominas.friasugt.workers.dev';
-  const SESSION_KEY = 'ugt_session_v3';
+  // Bloquear clic derecho
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
+  
+  // Bloquear F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'F12') { e.preventDefault(); return false; }
+    if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
+    if(e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
+    if(e.ctrlKey && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
+  });
 
-  function guardarSesion(email, token) {
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify({email, token})); } catch(e){}
+  // Detectar DevTools abierto y redirigir
+  var _dt = false;
+  var _threshold = 160;
+  setInterval(function(){
+    var _w = window.outerWidth - window.innerWidth;
+    var _h = window.outerHeight - window.innerHeight;
+    if(_w > _threshold || _h > _threshold){
+      if(!_dt){
+        _dt = true;
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1923;color:#ef4444;font-family:monospace;font-size:18px;text-align:center;padding:20px;">⛔ Acceso no autorizado.<br>Cierra las herramientas de desarrollador.</div>';
+      }
+    } else {
+      _dt = false;
+    }
+  }, 1000);
+
+  // Deshabilitar selección de texto
+  document.addEventListener('selectstart', function(e){ e.preventDefault(); });
+  document.addEventListener('dragstart', function(e){ e.preventDefault(); });
+}());
+</script>
+
+<script>
+
+/* ════════════════════════════════════
+   LOGIN — verificación por correo + código
+════════════════════════════════════ */
+(function() {
+  var WORKER = 'https://simuladornominas.friasugt.workers.dev';
+  var SESSION_KEY = 'ugt_session_v3';
+  var _email = '';
+
+  function guardar(email, token) {
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({email:email, token:token})); } catch(e){}
   }
-  function cargarSesion() {
-    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e){ return null; }
+  function cargar() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; } 
   }
-  function borrarSesion() {
+  function borrar() {
     try { localStorage.removeItem(SESSION_KEY); } catch(e){}
   }
+  function mostrarApp() {
+    var s = document.getElementById('login-screen');
+    if (s) {
+      s.style.animation = 'lsFadeOut 0.4s ease forwards';
+      setTimeout(function() { s.style.display = 'none'; document.body.style.overflow = ''; }, 400);
+    }
+  }
+  function setError(id, msg) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = msg;
+  }
+  function setBtn(id, disabled, text) {
+    var el = document.getElementById(id);
+    if (el) { el.disabled = disabled; el.textContent = text; }
+  }
 
-  async function verificarSesion(sesion) {
-    try {
-      const resp = await fetch(WORKER + '/calcular', {
+  window.lsEnviarCodigo = function() {
+    var email = (document.getElementById('ls-email').value || '').trim();
+    setError('ls-error', '');
+    if (!email) { setError('ls-error', '❌ Introduce tu correo'); return; }
+    setBtn('ls-btn1', true, '⏳ Enviando...');
+    fetch(WORKER + '/enviar-codigo', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: email})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.ok) {
+        _email = email;
+        document.getElementById('ls-paso1').style.display = 'none';
+        document.getElementById('ls-paso2').style.display = 'block';
+        var d = document.getElementById('ls-email-display');
+        if (d) d.textContent = email;
+        setTimeout(function() {
+          var c = document.getElementById('ls-codigo');
+          if (c) c.focus();
+        }, 100);
+      } else {
+        setError('ls-error', '❌ ' + (data.error || 'Error desconocido'));
+        setBtn('ls-btn1', false, 'Enviar código');
+      }
+    })
+    .catch(function() {
+      setError('ls-error', '❌ Error de conexión. Comprueba tu internet.');
+      setBtn('ls-btn1', false, 'Enviar código');
+    });
+  };
+
+  window.lsVerificarCodigo = function() {
+    var codigo = (document.getElementById('ls-codigo').value || '').trim();
+    setError('ls-error2', '');
+    if (!codigo || codigo.length !== 6) { setError('ls-error2', '❌ Introduce el código de 6 dígitos'); return; }
+    setBtn('ls-btn2', true, '⏳ Verificando...');
+    fetch(WORKER + '/verificar-codigo', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: _email, codigo: codigo})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.ok) {
+        guardar(data.email, data.token);
+        window._ugtEmail = data.email;
+        window._ugtToken = data.token;
+        mostrarApp();
+      } else {
+        setError('ls-error2', '❌ ' + (data.error || 'Código incorrecto'));
+        setBtn('ls-btn2', false, 'Verificar y entrar');
+      }
+    })
+    .catch(function() {
+      setError('ls-error2', '❌ Error de conexión.');
+      setBtn('ls-btn2', false, 'Verificar y entrar');
+    });
+  };
+
+  window.lsVolver = function() {
+    document.getElementById('ls-paso2').style.display = 'none';
+    document.getElementById('ls-paso1').style.display = 'block';
+    setError('ls-error', '');
+    setError('ls-error2', '');
+    setBtn('ls-btn1', false, 'Enviar código');
+    document.getElementById('ls-codigo').value = '';
+  };
+
+  // Al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    // Poner logo
+    var splash = document.querySelector('#splash-screen img');
+    var logo = document.getElementById('ls-logo');
+    if (splash && logo) logo.src = splash.src;
+
+    // Bloquear scroll de la app mientras está el login
+    document.body.style.overflow = 'hidden';
+
+    // Comprobar sesión guardada
+    var sesion = cargar();
+    if (sesion && sesion.email && sesion.token) {
+      // Verificar que el token sigue siendo válido
+      fetch(WORKER + '/calcular', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -1376,122 +1495,22 @@ mostrarHistorial();
           cuotaSindical:0, euroSolidario:0,
           datosMes:{diasTrabajados:0,horas_nocturnas:0,dias_turnicidad:0,dias_transporte:0,dias_festivo:0}
         })
-      });
-      const r = await resp.json();
-      return !r.error || r.error !== 'No autorizado';
-    } catch(e) { return false; }
-  }
-
-  // PASO 1: Enviar código
-  window.doEnviarCodigo = async function() {
-    const email = document.getElementById('login-email').value.trim();
-    const err = document.getElementById('login-error');
-    const btn = document.getElementById('login-btn');
-
-    if (!email) { err.textContent = '❌ Introduce tu correo'; return; }
-
-    btn.disabled = true;
-    btn.textContent = '⏳ Enviando código...';
-    err.textContent = '';
-
-    try {
-      const resp = await fetch(WORKER + '/enviar-codigo', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email})
-      });
-      const data = await resp.json();
-
-      if (data.ok) {
-        // Mostrar paso 2: introducir código
-        document.getElementById('login-paso1').style.display = 'none';
-        document.getElementById('login-paso2').style.display = 'block';
-        document.getElementById('login-email-display').textContent = email;
-        document.getElementById('login-codigo').focus();
-        window._loginEmail = email;
-      } else {
-        err.textContent = '❌ ' + data.error;
-        btn.disabled = false;
-        btn.textContent = 'Enviar código';
-      }
-    } catch(e) {
-      err.textContent = '❌ Error de conexión. Comprueba tu internet.';
-      btn.disabled = false;
-      btn.textContent = 'Enviar código';
-    }
-  };
-
-  // PASO 2: Verificar código
-  window.doVerificarCodigo = async function() {
-    const codigo = document.getElementById('login-codigo').value.trim();
-    const err = document.getElementById('login-error');
-    const btn2 = document.getElementById('login-btn2');
-
-    if (!codigo || codigo.length !== 6) { err.textContent = '❌ Introduce el código de 6 dígitos'; return; }
-
-    btn2.disabled = true;
-    btn2.textContent = '⏳ Verificando...';
-    err.textContent = '';
-
-    try {
-      const resp = await fetch(WORKER + '/verificar-codigo', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email: window._loginEmail, codigo})
-      });
-      const data = await resp.json();
-
-      if (data.ok) {
-        guardarSesion(data.email, data.token);
-        window._ugtEmail = data.email;
-        window._ugtToken = data.token;
-        const screen = document.getElementById('login-screen');
-        screen.style.animation = 'loginFadeOut 0.4s ease forwards';
-        setTimeout(() => { screen.style.display = 'none'; document.body.style.overflow = ''; }, 400);
-      } else {
-        err.textContent = '❌ ' + data.error;
-        btn2.disabled = false;
-        btn2.textContent = 'Verificar y entrar';
-      }
-    } catch(e) {
-      err.textContent = '❌ Error de conexión.';
-      btn2.disabled = false;
-      btn2.textContent = 'Verificar y entrar';
-    }
-  };
-
-  window.doVolver = function() {
-    document.getElementById('login-paso2').style.display = 'none';
-    document.getElementById('login-paso1').style.display = 'block';
-    document.getElementById('login-error').textContent = '';
-    document.getElementById('login-btn').disabled = false;
-    document.getElementById('login-btn').textContent = 'Enviar código';
-  };
-
-  // Compatibilidad con versión anterior
-  window.doLogin = window.doEnviarCodigo;
-
-  // Al cargar: comprobar sesión guardada
-  document.addEventListener('DOMContentLoaded', async function() {
-    const splashImg = document.querySelector('#splash-screen img');
-    const loginLogo = document.getElementById('login-logo');
-    if (splashImg && loginLogo) loginLogo.src = splashImg.src;
-
-    const sesion = cargarSesion();
-    if (sesion) {
-      const valida = await verificarSesion(sesion);
-      if (valida) {
-        window._ugtEmail = sesion.email;
-        window._ugtToken = sesion.token;
-        const screen = document.getElementById('login-screen');
-        if (screen) { screen.style.display = 'none'; document.body.style.overflow = ''; }
-        return;
-      } else {
-        borrarSesion();
-      }
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error !== 'No autorizado') {
+          window._ugtEmail = sesion.email;
+          window._ugtToken = sesion.token;
+          mostrarApp();
+        } else {
+          borrar();
+        }
+      })
+      .catch(function() { borrar(); });
     }
   });
 })();
+
 </script>
 </body>
 </html>
