@@ -704,6 +704,145 @@ document.getElementById('splash-screen').addEventListener('animationend', functi
   padding: 12px;
   margin-top: 4px;
 }
+
+/* ════════════════════════════════════
+   LOGIN SCREEN
+════════════════════════════════════ */
+#login-screen {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 100vh;
+  z-index: 999999;
+  background: #0f1923;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+body.login-active {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+.ls-header {
+  width: 100%;
+  background: linear-gradient(160deg, #8B0000, #6b0000);
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 18px;
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.ls-header::before {
+  content:''; position:absolute; bottom:-20px; right:-20px;
+  width:90px; height:90px;
+  border:18px solid rgba(255,215,0,.12); border-radius:50%;
+}
+.ls-logo {
+  width: 80px; height: 80px;
+  object-fit: contain;
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.6));
+  margin-bottom: 8px;
+}
+.ls-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px; font-weight: 600;
+  color: #fff; text-align: center;
+  line-height: 1.2; margin-bottom: 2px;
+  position: relative; z-index: 1;
+}
+.ls-title span { color: #FFD700; display: block; font-size: 18px; }
+.ls-sub {
+  font-size: 10px; color: rgba(255,255,255,.6);
+  text-align: center; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+.ls-body {
+  width: 100%; max-width: 420px;
+  padding: 16px 14px 16px;
+  box-sizing: border-box;
+  flex: 1;
+}
+.ls-card {
+  background: #1a2636;
+  border: 1px solid #2d4160;
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.ls-label {
+  display: block;
+  font-size: 11px; font-weight: 600;
+  color: #8da4be; margin-bottom: 6px;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.ls-input {
+  width: 100%;
+  background: #0f1923;
+  border: 1.5px solid #2d4160;
+  border-radius: 8px;
+  color: #e8eef5;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color .2s;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+.ls-input:focus { border-color: #3b82f6; }
+.ls-hint {
+  font-size: 11px; color: #8da4be;
+  text-align: center; margin-top: 8px;
+  line-height: 1.4;
+}
+.ls-btn {
+  width: 100%; margin-top: 10px; padding: 13px;
+  background: #0055cc; color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 15px; font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.ls-btn:disabled { background: #2d4160; color: #8da4be; }
+.ls-btn-back {
+  width: 100%; margin-top: 8px; padding: 11px;
+  background: transparent;
+  border: 1px solid #2d4160; border-radius: 8px;
+  color: #8da4be; font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.ls-error {
+  font-size: 12px; color: #ef4444;
+  text-align: center; margin-top: 8px;
+  min-height: 18px;
+}
+.ls-paso2-icon { text-align: center; margin-bottom: 12px; }
+.ls-paso2-icon div:first-child { font-size: 28px; margin-bottom: 4px; }
+.ls-paso2-titulo { font-size: 14px; font-weight: 600; color: #e8eef5; }
+.ls-paso2-email { font-size: 11px; color: #8da4be; margin-top: 2px; }
+.ls-divider {
+  display: flex; align-items: center; gap: 8px;
+  margin: 12px 0 10px;
+}
+.ls-divider::before, .ls-divider::after {
+  content: ''; flex: 1; height: 1px; background: #2d4160;
+}
+.ls-divider span { font-size: 11px; color: #8da4be; white-space: nowrap; }
+.ls-footer {
+  text-align: center; padding: 10px 16px 14px;
+  font-size: 10px; color: #4a6a8a;
+  flex-shrink: 0;
+}
+@keyframes lsFadeOut { from{opacity:1} to{opacity:0;pointer-events:none} }
+
 </style>
 <meta name="theme-color" content="#0f1923">
 <meta name="mobile-web-app-capable" content="yes">
