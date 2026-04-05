@@ -1473,184 +1473,39 @@ mostrarHistorial();
 <!-- VUdUwrdTaW11bGFkb3JOb21pbmFzwrdTYW5NaWd1ZWzCtzIwMjYwNDAxMjA1ODIzwrd2MS4wwrdQUk9URUdJRE8= -->
 
 <script>
-(function(){
-  // Bloquear clic derecho
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
-  
-  // Bloquear F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'F12') { e.preventDefault(); return false; }
-    if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
-    if(e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
-    if(e.ctrlKey && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
-  });
-
-  // Detectar DevTools abierto y redirigir
-  var _dt = false;
-  var _threshold = 160;
-  setInterval(function(){
-    var _w = window.outerWidth - window.innerWidth;
-    var _h = window.outerHeight - window.innerHeight;
-    if(_w > _threshold || _h > _threshold){
-      if(!_dt){
-        _dt = true;
-        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1923;color:#ef4444;font-family:monospace;font-size:18px;text-align:center;padding:20px;">⛔ Acceso no autorizado.<br>Cierra las herramientas de desarrollador.</div>';
-      }
-    } else {
-      _dt = false;
-    }
-  }, 1000);
-
-  // Deshabilitar selección de texto
-  document.addEventListener('selectstart', function(e){ e.preventDefault(); });
-  document.addEventListener('dragstart', function(e){ e.preventDefault(); });
-}());
-</script>
-
-<script>
-
-/* ════════════════════════════════════
-   LOGIN — verificación por correo + código
-════════════════════════════════════ */
+/* ════ PROTECCIÓN ANTI-COPIA ════ */
 (function() {
-  var WORKER = 'https://simuladornominas.friasugt.workers.dev';
-  var SESSION_KEY = 'ugt_session_v3';
-  var _email = '';
+  // Bloquear clic derecho
+  document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
 
-  function guardar(email, token) {
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify({email:email, token:token})); } catch(e){}
-  }
-  function cargar() {
-    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; } 
-  }
-  function borrar() {
-    try { localStorage.removeItem(SESSION_KEY); } catch(e){}
-  }
-  function mostrarApp() {
-    var s = document.getElementById('login-screen');
-    if (s) {
-      s.style.animation = 'lsFadeOut 0.4s ease forwards';
-      setTimeout(function() { s.style.display = 'none'; document.body.classList.remove('login-active'); var app = document.getElementById('app-wrapper'); if(app) app.style.display = ''; }, 400);
-    }
-  }
-  function setError(id, msg) {
-    var el = document.getElementById(id);
-    if (el) el.textContent = msg;
-  }
-  function setBtn(id, disabled, text) {
-    var el = document.getElementById(id);
-    if (el) { el.disabled = disabled; el.textContent = text; }
-  }
-
-  window.lsEnviarCodigo = function() {
-    var email = (document.getElementById('ls-email').value || '').trim();
-    setError('ls-error', '');
-    if (!email) { setError('ls-error', '❌ Introduce tu correo'); return; }
-    setBtn('ls-btn1', true, '⏳ Enviando...');
-    fetch(WORKER + '/enviar-codigo', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email: email})
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.ok) {
-        _email = email;
-        document.getElementById('ls-paso1').style.display = 'none';
-        document.getElementById('ls-paso2').style.display = 'block';
-        var d = document.getElementById('ls-email-display');
-        if (d) d.textContent = email;
-        setTimeout(function() {
-          var c = document.getElementById('ls-codigo');
-          if (c) c.focus();
-        }, 100);
-      } else {
-        setError('ls-error', '❌ ' + (data.error || 'Error desconocido'));
-        setBtn('ls-btn1', false, 'Enviar código');
-      }
-    })
-    .catch(function() {
-      setError('ls-error', '❌ Error de conexión. Comprueba tu internet.');
-      setBtn('ls-btn1', false, 'Enviar código');
-    });
-  };
-
-  window.lsVerificarCodigo = function() {
-    var codigo = (document.getElementById('ls-codigo').value || '').trim();
-    setError('ls-error2', '');
-    if (!codigo || codigo.length !== 6) { setError('ls-error2', '❌ Introduce el código de 6 dígitos'); return; }
-    setBtn('ls-btn2', true, '⏳ Verificando...');
-    fetch(WORKER + '/verificar-codigo', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email: _email, codigo: codigo})
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.ok) {
-        guardar(data.email, data.token);
-        window._ugtEmail = data.email;
-        window._ugtToken = data.token;
-        mostrarApp();
-      } else {
-        setError('ls-error2', '❌ ' + (data.error || 'Código incorrecto'));
-        setBtn('ls-btn2', false, 'Verificar y entrar');
-      }
-    })
-    .catch(function() {
-      setError('ls-error2', '❌ Error de conexión.');
-      setBtn('ls-btn2', false, 'Verificar y entrar');
-    });
-  };
-
-  window.lsVolver = function() {
-    document.getElementById('ls-paso2').style.display = 'none';
-    document.getElementById('ls-paso1').style.display = 'block';
-    setError('ls-error', '');
-    setError('ls-error2', '');
-    setBtn('ls-btn1', false, 'Enviar código');
-    document.getElementById('ls-codigo').value = '';
-  };
-
-  // Al cargar la página
-  document.addEventListener('DOMContentLoaded', function() {
-    // Poner logo
-    var splash = document.querySelector('#splash-screen img');
-    var logo = document.getElementById('ls-logo');
-    if (splash && logo) logo.src = splash.src;
-
-    // Bloquear scroll de la app mientras está el login
-    document.body.classList.add('login-active');
-
-    // Comprobar sesión guardada
-    var sesion = cargar();
-    if (sesion && sesion.email && sesion.token) {
-      // Verificar que el token sigue siendo válido
-      fetch(WORKER + '/calcular', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          email: sesion.email, token: sesion.token,
-          mes:1, anio:2026, categoria:'OF1_OBR', porcentaje:'100',
-          antiguedad:2010, bienios:8, irpf:0, miembrosPCF:0,
-          aplicarSindical:false, aplicarSolidario:false,
-          cuotaSindical:0, euroSolidario:0,
-          datosMes:{diasTrabajados:0,horas_nocturnas:0,dias_turnicidad:0,dias_transporte:0,dias_festivo:0}
-        })
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.error !== 'No autorizado') {
-          window._ugtEmail = sesion.email;
-          window._ugtToken = sesion.token;
-          mostrarApp();
-        } else {
-          borrar();
-        }
-      })
-      .catch(function() { borrar(); });
-    }
+  // Bloquear teclas de desarrollador
+  document.addEventListener('keydown', function(e) {
+    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S, Ctrl+A
+    if (e.key === 'F12') { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && ['I','J','C','K'].includes(e.key.toUpperCase())) { e.preventDefault(); return false; }
+    if (e.ctrlKey && ['U','S','A','P'].includes(e.key.toUpperCase())) { e.preventDefault(); return false; }
   });
+
+  // Detectar DevTools abierto (método de tamaño)
+  var threshold = 160;
+  function checkDevTools() {
+    if (window.outerWidth - window.innerWidth > threshold || 
+        window.outerHeight - window.innerHeight > threshold) {
+      document.body.innerHTML = '<div style="position:fixed;inset:0;background:#0f1923;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;"><div style="font-size:48px">🔒</div><div style="color:#FFD700;font-size:20px;font-weight:700;text-align:center;">Acceso restringido</div><div style="color:#8da4be;font-size:14px;text-align:center;">Herramienta sindical UGT</div></div>';
+    }
+  }
+  setInterval(checkDevTools, 1000);
+
+  // Bloquear selección de texto
+  document.addEventListener('selectstart', function(e) { e.preventDefault(); });
+
+  // Bloquear arrastrar imágenes
+  document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+
+  // Deshabilitar vista de código fuente
+  document.onkeydown = function(e) {
+    if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+  };
 })();
 
 </script>
