@@ -1386,21 +1386,7 @@ mostrarHistorial();
     if(e.ctrlKey && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
   });
 
-  // Detectar DevTools abierto y redirigir
-  var _dt = false;
-  var _threshold = 160;
-  setInterval(function(){
-    var _w = window.outerWidth - window.innerWidth;
-    var _h = window.outerHeight - window.innerHeight;
-    if(_w > _threshold || _h > _threshold){
-      if(!_dt){
-        _dt = true;
-        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1923;color:#ef4444;font-family:monospace;font-size:18px;text-align:center;padding:20px;">⛔ Acceso no autorizado.<br>Cierra las herramientas de desarrollador.</div>';
-      }
-    } else {
-      _dt = false;
-    }
-  }, 1000);
+
 
   // Deshabilitar selección de texto
   document.addEventListener('selectstart', function(e){ e.preventDefault(); });
