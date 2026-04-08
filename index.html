@@ -776,101 +776,6 @@ body.login-active { position:fixed; width:100%; overflow:hidden; }
 .ls-footer { text-align:center; padding:10px 16px 14px; font-size:10px; color:#4a6a8a; flex-shrink:0; }
 @keyframes lsFadeOut { from{opacity:1} to{opacity:0;pointer-events:none} }
 
-
-/* ════════════════════════════════════
-   MODO PC — pantallas >= 900px
-════════════════════════════════════ */
-@media (min-width: 900px) {
-
-  /* Contenedor general más ancho */
-  body { font-size: 15px; }
-
-  /* Header horizontal más compacto */
-  .app-header { padding: 10px 40px 0; }
-  .header-top { margin-bottom: 10px; }
-  .logo-badge { width: 40px; height: 40px; font-size: 13px; }
-  .header-title { font-size: 18px; }
-
-  /* Tabs horizontales más anchos */
-  .nav-tabs { max-width: 900px; margin: 0 auto; gap: 8px; }
-  .nav-tab { font-size: 13px; padding: 10px 24px; flex: none; }
-  .nav-tab .tab-icon { display: inline; font-size: 14px; margin-right: 6px; margin-bottom: 0; }
-
-  /* Contenido con máximo ancho centrado */
-  .tab-content { 
-    max-width: 1100px; 
-    margin: 0 auto; 
-    padding: 24px 40px 48px;
-  }
-
-  /* Pestaña NÓMINA: formulario izquierda + resultado derecha */
-  #nomina.tab-content.active {
-    display: grid;
-    grid-template-columns: 420px 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  /* Todos los cards del formulario en la columna izquierda */
-  #nomina .card,
-  #nomina #btn-guardar-config,
-  #nomina .btn.btn-primary {
-    grid-column: 1;
-  }
-
-  /* Output en la columna derecha */
-  #nomina-output {
-    grid-column: 2;
-    grid-row: 1 / 99;
-    position: sticky;
-    top: 80px;
-  }
-
-  /* Cards más espaciosos */
-  .card {
-    padding: 20px 24px;
-    border-radius: 14px;
-  }
-  .card-title { font-size: 14px; margin-bottom: 14px; }
-
-  /* Campos más grandes */
-  .field label { font-size: 12px; }
-  .field select, .field input {
-    padding: 10px 14px;
-    font-size: 14px;
-    border-radius: 8px;
-  }
-
-  /* Botones más grandes */
-  .btn { padding: 14px; font-size: 15px; border-radius: 10px; }
-
-  /* Calendario más grande */
-  #calendario.tab-content.active {
-    max-width: 800px;
-  }
-  .cal-day { min-height: 56px; font-size: 13px; }
-
-  /* Historial en tabla */
-  #historial.tab-content.active {
-    max-width: 800px;
-  }
-
-  /* Resultado de nómina */
-  .nomina-output .card { margin-bottom: 16px; }
-  .liquido-card { padding: 28px; }
-  .liquido-amount { font-size: 52px; }
-  .concepto-row { padding: 8px 0; }
-  .concepto-name { font-size: 14px; }
-  .concepto-importe { font-size: 14px; }
-}
-
-@media (min-width: 1200px) {
-  #nomina.tab-content.active {
-    grid-template-columns: 480px 1fr;
-  }
-  .tab-content { padding: 28px 60px 48px; }
-}
-
 </style>
 <meta name="theme-color" content="#0f1923">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1481,7 +1386,21 @@ mostrarHistorial();
     if(e.ctrlKey && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
   });
 
-
+  // Detectar DevTools abierto y redirigir
+  var _dt = false;
+  var _threshold = 160;
+  setInterval(function(){
+    var _w = window.outerWidth - window.innerWidth;
+    var _h = window.outerHeight - window.innerHeight;
+    if(_w > _threshold || _h > _threshold){
+      if(!_dt){
+        _dt = true;
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1923;color:#ef4444;font-family:monospace;font-size:18px;text-align:center;padding:20px;">⛔ Acceso no autorizado.<br>Cierra las herramientas de desarrollador.</div>';
+      }
+    } else {
+      _dt = false;
+    }
+  }, 1000);
 
   // Deshabilitar selección de texto
   document.addEventListener('selectstart', function(e){ e.preventDefault(); });
