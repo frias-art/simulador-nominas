@@ -851,9 +851,7 @@ if('serviceWorker' in navigator){
       <div class="ls-error" id="ls-error2"></div>
     </div>
     <div class="ls-divider"><span>¿No eres afiliado/a?</span></div>
-    <a class="ls-afiliate"
-       href="mailto:ssugtsmm@gmail.com?subject=Quiero%20afiliarme%20a%20UGT&body=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20para%20afiliarme%20a%20UGT%20FICA%20Cervezas%20San%20Miguel%20M%C3%A1laga."
-       style="display:block;width:100%;padding:22px 16px;background:linear-gradient(135deg,#8B0000,#cc0000);border:2px solid rgba(255,215,0,.4);border-radius:14px;color:#FFD700;font-size:22px;font-weight:900;text-decoration:none;box-sizing:border-box;box-shadow:0 6px 24px rgba(139,0,0,.6);line-height:1.4;text-align:center;margin-top:4px;">
+    <a class="ls-afiliate" href="/cdn-cgi/l/email-protection#bac9c9cfddcec9d7d7faddd7dbd3d694d9d5d785c9cfd8d0dfd9ce87ebcfd3dfc8d59f888adbdcd3d6d3dbc8d7df9f888adb9f888aeffdee9cd8d5dec387f2d5d6db9f88f99f888ad7df9f888addcfc9cedbc89ff9899ffbfedb9f888ac8dfd9d3d8d3c89f888ad3d4dcd5c8d7dbd9d39ff9899ff889d49f888acadbc8db9f888adbdcd3d6d3dbc8d7df9f888adb9f888aeffdee9f888afcf3f9fb9f888af9dfc8ccdfc0dbc99f888ae9dbd49f888af7d3ddcfdfd69f888af79ff9899ffb8bd6dbdddb94" style="display:block;width:100%;padding:22px 16px;background:linear-gradient(135deg,#8B0000,#cc0000);border:2px solid rgba(255,215,0,.4);border-radius:14px;color:#FFD700;font-size:22px;font-weight:900;text-decoration:none;box-sizing:border-box;box-shadow:0 6px 24px rgba(139,0,0,.6);line-height:1.4;text-align:center;margin-top:4px;">
       ✊ ¡Afíliate YA a UGT!
       <span style="font-size:13px;font-weight:600;color:#FFD700;display:block;margin-top:4px;opacity:.9;">Defendemos tus derechos. Juntos somos más.</span>
     </a>
@@ -1067,7 +1065,7 @@ if('serviceWorker' in navigator){
 </div>
 
 <!-- ==================== SCRIPTS ==================== -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function toggleDisclaimer() {
 const panel = document.getElementById("disclaimer-panel");
 panel.style.display = panel.style.display === "none" ? "flex" : "none";
@@ -1386,21 +1384,7 @@ mostrarHistorial();
     if(e.ctrlKey && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
   });
 
-  // Detectar DevTools abierto y redirigir
-  var _dt = false;
-  var _threshold = 160;
-  setInterval(function(){
-    var _w = window.outerWidth - window.innerWidth;
-    var _h = window.outerHeight - window.innerHeight;
-    if(_w > _threshold || _h > _threshold){
-      if(!_dt){
-        _dt = true;
-        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1923;color:#ef4444;font-family:monospace;font-size:18px;text-align:center;padding:20px;">⛔ Acceso no autorizado.<br>Cierra las herramientas de desarrollador.</div>';
-      }
-    } else {
-      _dt = false;
-    }
-  }, 1000);
+
 
   // Deshabilitar selección de texto
   document.addEventListener('selectstart', function(e){ e.preventDefault(); });
@@ -1476,17 +1460,4 @@ mostrarHistorial();
       fetch(WORKER+'/calcular',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({email:sesion.email,token:sesion.token,mes:1,anio:2026,categoria:'OF1_OBR',porcentaje:'100',
           antiguedad:2010,bienios:8,irpf:0,miembrosPCF:0,aplicarSindical:false,aplicarSolidario:false,
-          cuotaSindical:0,euroSolidario:0,datosMes:{diasTrabajados:0,horas_nocturnas:0,dias_turnicidad:0,dias_transporte:0,dias_festivo:0}})}
-      )
-      .then(function(r){return r.json();})
-      .then(function(d){
-        if(d.error!=='No autorizado'){window._ugtEmail=sesion.email;window._ugtToken=sesion.token;mostrarApp();}
-        else borrar();
-      }).catch(function(){borrar();});
-    }
-  });
-})();
-
-</script>
-</body>
-</html>
+          cuotaSindical:0,euroSolidario:0,datosMes:{diasTrabajados:0,horas_nocturnas:0,dias_turnicidad:0,dias_transporte:0,dia
